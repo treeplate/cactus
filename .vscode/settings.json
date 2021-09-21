@@ -1,0 +1,8 @@
+{
+    "editor.autoClosingBrackets": "never",
+    "editor.autoClosingDelete": "never",
+    "editor.acceptSuggestionOnEnter": "off",
+    "editor.autoClosingOvertype": "never",
+    "editor.autoClosingQuotes": "never",
+    "editor.bracketPairColorization.enabled": true,
+}
