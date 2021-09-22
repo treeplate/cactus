@@ -1,8 +1,13 @@
 import 'desert.dart';
 
 void main() {
-  Desert desert = Desert();
-  desert.createCactus();
-  desert.createCactus();
-  print(desert);
+  Desert d = Desert();
+  d.createCactus();
+  Bug b = d.createBug(getCactus)..clean();
+  d.reportBug(b);
+  b.dispose();
+}
+
+void getCactus(Cactus cactus) {
+  cactus.win();
 }
