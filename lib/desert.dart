@@ -43,6 +43,7 @@ class Desert {
           "Cannot create bug, try createCactus instead, then try this again.");
     }
     _cacti.insert(0, _cacti.last);
+    _cacti.removeLast();
     _cacti.first.cactusGetter = x;
     return Bug(_cacti.first);
   }
@@ -58,12 +59,20 @@ class Desert {
     if (!_cacti.contains(bug._cactus)) {
       throw FormatException("Report on desert where bug was created.");
     }
+    if (_bugs.contains(bug)) {
+      throw FormatException("Bug has been reported twice.");
+    }
     _bugs.add(bug);
     bug._listen(bugListener);
   }
 
   void bugListener(Cactus cactus) {
     cactus.cactusGetter(cactus);
+    for (Bug bug in _bugs) {
+      if (bug._cactus == cactus) {
+        _bugs.remove(bug);
+      }
+    }
   }
 
   String toString() => _cacti.length != 1
@@ -75,6 +84,7 @@ class Desert {
     for (Bug bug in _bugs) {
       bug.dispose();
     }
+    _cacti.removeRange(0, _cacti.length);
   }
 
   String get help => "Call Cactus.win.";
@@ -89,15 +99,15 @@ class Bug {
 
   /// Gets garbage-collected, dirtying the [Bug].
   void dispose() {
-    for (void Function(Cactus) fun in listeners) {
+    for (void Function(Cactus) fun in _listeners) {
       fun(_cactus);
     }
-    listeners.removeRange(0, listeners.length);
-    listeners.add(_faliure);
+    _listeners.removeRange(0, _listeners.length);
+    _listeners.add(_failure);
     _clean = false;
   }
 
-  void _faliure(Cactus cactus) {
+  void _failure(Cactus cactus) {
     throw FormatException("The bug orbiting $cactus got disposed twice.");
   }
 
@@ -109,10 +119,10 @@ class Bug {
   }
 
   void _listen(void Function(Cactus) x) {
-    listeners.add(x);
+    _listeners.add(x);
   }
 
-  final List<void Function(Cactus)> listeners = [];
+  final List<void Function(Cactus)> _listeners = [];
 
   final Cactus _cactus;
 

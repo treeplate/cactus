@@ -3,11 +3,9 @@ import 'desert.dart';
 void main() {
   Desert d = Desert();
   d.createCactus();
-  Bug b = d.createBug(getCactus)..clean();
+  late Cactus c;
+  Bug b = d.createBug((Cactus cactus) => c = cactus)..clean();
   d.reportBug(b);
-  b.dispose();
-}
-
-void getCactus(Cactus cactus) {
-  cactus.win();
+  d.dispose();
+  c.win();
 }
